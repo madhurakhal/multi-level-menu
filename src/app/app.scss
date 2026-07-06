@@ -1,0 +1,56 @@
+:host {
+  display: grid;
+  flex-grow: 1;
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: auto 1fr;
+  grid-template-areas:
+    'color font size'
+    'editor editor editor';
+  gap: 1rem;
+  height: 100%;
+  padding: 1rem;
+  box-sizing: border-box;
+
+  .colors-area {
+    grid-area: color;
+  }
+
+  .fonts-area {
+    grid-area: font;
+  }
+
+  .sizes-area {
+    grid-area: size;
+  }
+
+  .editor-area {
+    grid-area: editor;
+    display: grid;
+
+    textarea {
+      resize: none;
+      border: 1px solid var(--n-30);
+      border-radius: 0.5rem;
+      background-color: var(--n-00);
+      padding: 0.9rem;
+      line-height: 1.5;
+    }
+  }
+
+  .color-selector {
+    border: 1px solid var(--option-color);
+    padding: 0.5rem;
+    border-radius: 0.5rem;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+
+    &:hover {
+      background-color: var(--n-10);
+    }
+  }
+}
+
+
+.hidden {
+  display: none;
+}

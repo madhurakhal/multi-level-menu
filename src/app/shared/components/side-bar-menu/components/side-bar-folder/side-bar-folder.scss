@@ -1,0 +1,24 @@
+.side-bar-folder-container {
+    display: block;
+    position: relative;
+}
+
+.side-bar-folder-header{
+    display: flex;
+    align-items: center;
+    gap: 3px;
+}
+
+.innter-side-bar-folder-menu {
+    display: block;
+    margin-left: 10px;
+
+    li {
+        list-style: none;
+        margin-left: 10px;
+    }
+}
+
+.hidden {
+    display: none;
+}

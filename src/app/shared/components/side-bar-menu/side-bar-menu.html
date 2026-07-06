@@ -1,0 +1,22 @@
+<ul class="side-bar-folder-menu">
+        @for(item of menus(); track item.id) {
+            @switch(item.type) {
+                @case ('folder') {
+                    <li class="side-bar-folder-menu-folder"
+                    
+                    >
+<app-side-bar-folder [folder]="item" (topLevel)="false" (folderCheckedChanged)="handleFolderCheckedChange(item, $event)">
+                    </app-side-bar-folder>
+                    </li>
+                    
+
+                }
+                @default {
+                    <li class="side-bar-folder-menu-item">
+                    <app-side-bar-item [item]="item" (itemChanged)="handleItemChanged(item, $event)">
+                    </app-side-bar-item>
+                    </li>   
+                }
+            }
+        }
+    </ul>
