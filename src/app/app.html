@@ -3,43 +3,27 @@
 </ng-template> -->
 
 <div class="colors-area">
-  <app-item-selector
-    title="Colors"
-    [options]="possibleColors()"
-    [(selectedOption)]="selectedColor"
-  >
-  
-  <div class="color-selector" 
-    [style.--option-color]="color"
-  
-  *appItemContainer="let color; let selected=isSelected; let select= onSelect"
-  (click)="select(color)"
-  >
-    <span [style.color]="color" [class.is-selected]="selected">{{color}}</span>
-  </div>
+  <app-item-selector title="Colors" [options]="possibleColors()" [(selectedOption)]="selectedColor">
 
-</app-item-selector>
+    <div class="color-selector" [style.--option-color]="color"
+      *appItemContainer="let color; let selected=isSelected; let select= onSelect" (click)="select(color)">
+      <span [style.color]="color" [class.is-selected]="selected">{{color}}</span>
+    </div>
+
+  </app-item-selector>
 </div>
 
 <div class="fonts-area">
-  <app-item-selector
-    title="Font"
-    [options]="possibleFonts()"
-    [(selectedOption)]="selectedFont"
-  >
+  <app-item-selector title="Font" [options]="possibleFonts()" [(selectedOption)]="selectedFont">
     <span *appItemTemplate="let value;" [style.font-family]="value">{{value}}</span>
 
-</app-item-selector>
+  </app-item-selector>
 </div>
 
 <div class="sizes-area">
-  <app-item-selector
-    title="Size"
-    [options]="possibleSizes()"
-    [(selectedOption)]="selectedSize"
-  >
-  <span *appItemTemplate="let value;" [style.font-size]="value">{{value}}</span>  
-</app-item-selector>
+  <app-item-selector title="Size" [options]="possibleSizes()" [(selectedOption)]="selectedSize">
+    <span *appItemTemplate="let value;" [style.font-size]="value">{{value}}</span>
+  </app-item-selector>
 </div>
 
 <!-- <div class="editor-area">
@@ -52,7 +36,41 @@
 </div> -->
 
 
+<ng-template #sidebarFolder let-folder let-atLeastOneChecked="atLeastOneChecked" let-toggle="toggle"
+  let-isExpanded="isExpanded" let-toggleFolder="toggleFolder">
+  <div class="side-bar-folder-container">
+    <div class="side-bar-folder-header">
+
+      @if(folder.checked) {
+      <input type="checkbox" [checked]="folder.checked" (click)="toggleFolder($event)" />
+
+
+      <!-- <input type="checkbox"  (click)="toggleFolder($event)" /> -->
+
+      }@else if (
+      atLeastOneChecked()
+      ) {
+      <span class="material-symbols-outlined" (click)="toggleFolder($event)">
+        flaky
+      </span>
+      } @else { 
+        <input type="checkbox" [checked]="folder.checked" (click)="toggleFolder($event)" />
+      }
+      <div class="side-bar-folder-header-title">
+        <span>{{ folder.title }}</span>
+      </div>
+      <div class="side-bar-folder-header-icon" (click)="toggle()">
+        <span class="material-symbols-outlined">
+          {{ isExpanded ? 'expand_less' : 'expand_more' }}
+        </span>
+      </div>
+    </div>
+  </div>
+</ng-template>
+
+
 <div class="menu-container">
-  <app-side-bar-menu [(menus)]="menus">
+  <app-side-bar-menu [(menus)]="menus" [sideBarTemplate]="sidebarFolder">
+
   </app-side-bar-menu>
 </div>

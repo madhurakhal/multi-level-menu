@@ -1,43 +1,57 @@
 <div>
-    <div class="side-bar-folder-container">
-        <div class="side-bar-folder-header">
-            <input type="checkbox" [checked]="allChecked()" (click)="_handleCheck($event)" />
-            <div class="side-bar-folder-header-title">
-                <span>{{ folder().title }}</span>
-            </div>
-            <div class="side-bar-folder-header-icon" (click)="toggle()">
-                <span class="material-symbols-outlined">
-                    {{ isExpanded() ? 'expand_less' : 'expand_more' }}
-                </span>
+    @if(hasTemplate()) {
+        <ng-container
+            *ngTemplateOutlet="sideBarFolderTemplate()
+            ;context: {
+                $implicit: folder(),
+                toggle: toggle.bind(this),
+                isExpanded: isExpanded(),
+                toggleFolder: toggleFolder.bind(this),
+                atLeastOneChecked: atLeastOneChecked
+            }"
+        >
+        </ng-container>
+
+    }@else {
+        <div class="side-bar-folder-container">
+            <div class="side-bar-folder-header">
+                <input type="checkbox" [checked]="folder().checked" (click)="toggleFolder($event)" />
+                <div class="side-bar-folder-header-title">
+                    <span>{{ folder().title }}</span>
+                </div>
+                <div class="side-bar-folder-header-icon" (click)="toggle()">
+                    <span class="material-symbols-outlined">
+                        {{ isExpanded() ? 'expand_less' : 'expand_more' }}
+                    </span>
+                </div>
             </div>
         </div>
-    </div>
-    @if(hasMenuOrFolders()) {
-        <div [class.hidden]="!isExpanded()">
-<ul  class="innter-side-bar-folder-menu">
-        @if(hasFolders()) {
-        @for (folder of folders(); track folder.foldder_id) {
-        <li>
-            <app-side-bar-folder [topLevel]="false" [folder]="folder" (folderCheckedChanged)="handleFolderCheckedChange(folder, $event)"></app-side-bar-folder>
-        </li>
-        }
-        }
-        @if(hasMenuItems()) {
-        @for (item of menuItems(); track item.id) {
-        <li>
-            <app-side-bar-item [item]="item" (itemChanged)="handleItemChanged(item, $event)"></app-side-bar-item>
-        </li>
-        }
-        }
-    </ul>
-        </div>
+    }
     
+    @if(hasMenuOrFolders()) {
+    <div [class.hidden]="!isExpanded()">
+        <ul class="innter-side-bar-folder-menu">
+            @if(hasFolders()) {
+            @for (folder of folders(); track folder.foldder_id) {
+            <li>
+                <app-side-bar-folder [folder]="folder"
+                    (folderUpdated)="handleFolderUpdate($event)"
+                    [sideBarFolderTemplate]="sideBarFolderTemplate()"
+                    >
+                    
+                </app-side-bar-folder>
+            </li>
+            }
+            }
+            @if(hasMenuItems()) {
+            @for (item of menuItems(); track item.id) {
+            <li>
+                <app-side-bar-item [item]="item" (itemChanged)="handleItemChanged(item, $event)"></app-side-bar-item>
+            </li>
+            }
+            }
+        </ul>
+    </div>
+
     }
 </div>
-
-
-
-
-
-
-

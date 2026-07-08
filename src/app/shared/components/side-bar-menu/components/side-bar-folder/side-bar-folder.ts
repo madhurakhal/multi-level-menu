@@ -1,60 +1,61 @@
-import { Component, computed, effect, input, model, output, signal } from '@angular/core';
+import { NgTemplateOutlet } from '@angular/common';
+import { Component, computed, effect, input, model, output, signal, TemplateRef } from '@angular/core';
 import { SidebarMenuFolder, SidebarMenuItem } from '../../interfaces/sidebar-menu.interface';
 import { SideBarItem } from '../side-bar-item/side-bar-item';
+import { SidebarFolderContext } from '../../interfaces/sidebar-folder.context';
+
+
 
 @Component({
   selector: 'app-side-bar-folder',
   imports: [
     SideBarItem,
-  ],
+    SideBarFolder,
+    NgTemplateOutlet
+],
   templateUrl: './side-bar-folder.html',
   styleUrl: './side-bar-folder.scss',
 })
 export class SideBarFolder {
-  topLevel = input<boolean>(true);
+  sideBarFolderTemplate = input<TemplateRef<SidebarFolderContext>>();
   folder = model.required<SidebarMenuFolder>();
+  folderUpdated = output<SidebarMenuFolder>();
 
-  folderCheckedChanged = output<boolean>();
+
+  readonly hasTemplate = computed(() => !!this.sideBarFolderTemplate());
 
   readonly menuItems = computed(() => this.folder().menuItems || []);
   readonly folders = computed(() => this.folder().folders || []);
 
   readonly isExpanded = signal(false);
 
-  hasMenuItems = computed(() => this.menuItems().length > 0);
-  hasFolders = computed(() => this.folders().length > 0);
+  readonly hasMenuItems = computed(() => this.menuItems().length > 0);
+  readonly hasFolders = computed(() => this.folders().length > 0);
 
-  hasMenuOrFolders = computed(() => this.hasMenuItems() || this.hasFolders());
+  readonly hasMenuOrFolders = computed(() => this.hasMenuItems() || this.hasFolders());
 
   toggle() {
     this.isExpanded.set(!this.isExpanded());
   }
 
-  _handleCheck(evt: Event) {
-    const checkbox = evt.target as HTMLInputElement;
+  toggleFolder(evt: Event) {
+    evt.preventDefault();
+
     this.folder.update(folder => {
       return {
         ...folder,
-        checked: checkbox.checked,
+        checked: !folder.checked,
       };
     });
     this.updateChildren();
-
-    if (!this.topLevel()) {
-      this.folderCheckedChanged.emit(checkbox.checked);
-
-    }
+    this.folderUpdated.emit(this.folder())
   }
-
-
-
 
   atLeastOneChecked = computed(() => {
     const menuItems = this.menuItems();
     const folders = this.folders();
     return menuItems.some(item => item.checked) || folders.some(folder => folder.checked);
   });
-
 
   allChecked = computed(() => {
     const menuItems = this.menuItems();
@@ -71,30 +72,22 @@ export class SideBarFolder {
           checked
         }
       });
-      if (!this.topLevel()) {
-        console.log('Emitting folder checked change for folder:', this.folder().title, 'Checked:', checked);
-        this.folderCheckedChanged.emit(checked);
-      }
-
-
+      this.folderUpdated.emit(this.folder())
     })
   }
 
-  handleFolderCheckedChange(item: SidebarMenuFolder, isChecked: boolean) {
-    console.log('initial', item, isChecked);
-
-    
-    this.folder.update(folder => {
+  handleFolderUpdate(updatedFolder: SidebarMenuFolder) {
+    if (this.folder().folders?.length) {
+      this.folder.update(folder => {
         return {
           ...folder,
-          checked: isChecked
+          folders: folder.folders?.map(f =>
+            f.id === updatedFolder.id ? updatedFolder : f
+          )
         }
-      });
-
-    if (!this.topLevel()) {
-      console.log('Emitting folder checked change for folder:', item.title, 'Checked:', isChecked);
-      this.folderCheckedChanged.emit(isChecked);
+      })
     }
+    this.folderUpdated.emit(this.folder())
   }
 
   handleItemChanged(item: SidebarMenuItem, isChecked: boolean) {
@@ -112,19 +105,21 @@ export class SideBarFolder {
         menuItems: updatedMenuItems,
       };
     });
+
+    this.folderUpdated.emit(this.folder())
   }
 
 
 
   private updateChildren() {
     const newCheckedState = this.folder().checked;
-    this.folder.update(folder =>  {
+    this.folder.update(folder => {
       return {
         ...folder,
         menuItems: folder.menuItems?.map(item => ({
-        ...item,
-        checked: newCheckedState,
-      })),
+          ...item,
+          checked: newCheckedState,
+        })),
         checked: newCheckedState,
         folders: folder.folders?.map(subfolder => this.updateFolderRecursive(subfolder, newCheckedState))
       }

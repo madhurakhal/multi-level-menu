@@ -1,9 +1,9 @@
 import { Component, signal } from '@angular/core';
-import { interval, map, mergeMap, of, take } from 'rxjs';
-import { ItemSelector } from './shared/components/item-selector-component/item-selector-component';
+// import { interval, map, mergeMap, of, take } from 'rxjs';
 import { COLOR_NAMES, FONT_NAMES, SIZES } from './data/constants';
-import { sideBarMenu } from './shared/components/side-bar-menu/side-bar-menu';
+import { ItemSelector } from './shared/components/item-selector-component/item-selector-component';
 import { SidebarMenuFolder, SidebarMenuItem } from './shared/components/side-bar-menu/interfaces/sidebar-menu.interface';
+import { sideBarMenu } from './shared/components/side-bar-menu/side-bar-menu';
 
 @Component({
   selector: 'app-root',
@@ -32,41 +32,41 @@ set menus(value: (SidebarMenuFolder | SidebarMenuItem)[]) {
   menusSignal = signal<(SidebarMenuFolder | SidebarMenuItem)[]>([
     {
       id: 1,
-      title: 'Folder 1',
+      title: 'Our company',
       foldder_id: 1,
       type: 'folder',
       checked: false,
       menuItems: [
-        { id: 1, title: 'Item 1', parent_id: 1, type: 'item', checked: false },
-        { id: 2, title: 'Item 2', parent_id: 1, type: 'item', checked: false },
+        { id: 1, title: 'Contact us', parent_id: 1, type: 'item', checked: false },
+        { id: 2, title: 'Locations', parent_id: 1, type: 'item', checked: false },
       ],
       folders: [
         {
-          id: 3, title: 'Folder 3', foldder_id: 1, type: 'folder', checked: false,
+          id: 3, title: 'Our teams', foldder_id: 1, type: 'folder', checked: false,
           folders: [
             {
-              id: 4, title: 'Folder 4', foldder_id: 3, type: 'folder',
+              id: 4, title: 'Directors', foldder_id: 3, type: 'folder',
               checked: false,
               menuItems: [
-                { id: 4, title: 'Item 4', parent_id: 4, type: 'item', checked: false},
+                { id: 4, title: 'Management', parent_id: 4, type: 'item', checked: false},
               ]
             }
           ],
           menuItems: [
-            { id: 3, title: 'Item 3', parent_id: 3, type: 'item' , checked:false},
+            { id: 3, title: 'Services', parent_id: 3, type: 'item' , checked:false},
           ]
         },
       ]
     },
     {
       id: 2,
-      title: 'Folder 2',
+      title: 'About Us',
       foldder_id: 2,
       type: 'folder',
       checked: false,
       menuItems: [
-        { id: 5, title: 'Item 5', parent_id: 2, type: 'item', checked: false },
-        { id: 6, title: 'Item 6', parent_id: 2, type: 'item', checked: false },
+        { id: 5, title: 'Advisory team', parent_id: 2, type: 'item', checked: false },
+        { id: 6, title: 'Investors', parent_id: 2, type: 'item', checked: false },
       ],
     }
   ]);
@@ -74,18 +74,18 @@ set menus(value: (SidebarMenuFolder | SidebarMenuItem)[]) {
 
 
   constructor() {
-    of(1, 2, 3)
-      .pipe(
-        mergeMap(val => {
-          return interval(1000)
-            .pipe(
-              take(3),
-              map(index => `Value of ${val} - ${index}`)
-            )
-        })
-      ).subscribe(
-        console.log
-      );
+    // of(1, 2, 3)
+    //   .pipe(
+    //     mergeMap(val => {
+    //       return interval(1000)
+    //         .pipe(
+    //           take(3),
+    //           map(index => `Value of ${val} - ${index}`)
+    //         )
+    //     })
+    //   ).subscribe(
+    //     console.log
+    //   );
 
 
     // 
