@@ -1,6 +1,5 @@
 import { Component, signal } from '@angular/core';
 // import { interval, map, mergeMap, of, take } from 'rxjs';
-import { COLOR_NAMES, FONT_NAMES, SIZES } from './data/constants';
 // import { ItemSelector } from './shared/components/item-selector-component/item-selector-component';
 // import { sideBarMenu } from './shared/components/side-bar-menu/side-bar-menu';
 // import { HideAfter } from './shared/components/hide-after';
@@ -14,13 +13,6 @@ import { MultiLevelMenu, type SidebarMenuFolder, type SidebarMenuItem } from 'mu
 })
 export class App {
   protected readonly title = signal('angular-list');
-  readonly possibleColors = signal(COLOR_NAMES);
-  readonly possibleFonts = signal(FONT_NAMES);
-  readonly possibleSizes = signal(SIZES);
-
-  readonly selectedColor = signal(this.possibleColors()[0]);
-  readonly selectedFont = signal(this.possibleFonts()[0]);
-  readonly selectedSize = signal(this.possibleSizes()[0]);
 
 
   get menus(): (SidebarMenuFolder | SidebarMenuItem)[] {
