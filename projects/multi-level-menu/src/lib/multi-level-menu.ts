@@ -5,7 +5,7 @@ import { SidebarMenuFolder, SidebarMenuItem } from './interfaces/sidebar-menu.in
 import { SidebarFolderContext } from './interfaces/sidebar-folder.context';
 
 @Component({
-  selector: 'multi-level-menu',
+  selector: 'multi-level-side-menu',
   imports: [SideBarFolderItem, SideBarListItem],
   template: ` <ul class="side-bar-folder-menu">
     @for(item of menus(); track item.id) {
@@ -17,8 +17,6 @@ import { SidebarFolderContext } from './interfaces/sidebar-folder.context';
         >
         </sidebar-folder-item>
     </li>
-
-
     }
     @default {
     <li class="side-bar-folder-menu-item">
@@ -29,11 +27,7 @@ import { SidebarFolderContext } from './interfaces/sidebar-folder.context';
     }
     }
 </ul>`,
-  styles: `
-      .side-bar-folder-menu {
-        list-style: none;
-    }
-  `,
+  styleUrl: './multi-level-menu.scss',
 })
 export class MultiLevelMenu {
   menus = model<(SidebarMenuFolder | SidebarMenuItem)[]>([]);

@@ -1,5 +1,42 @@
 :host {
-    display: flex;
-    align-items: center;
-    gap: 5px;
+  display: flex;
+  align-items: center;
+  padding: 6px 8px;
+  border-radius: var(--menu-item-border-radius, 6px);
+  transition: background-color var(--menu-transition-speed, 0.15s) ease;
+  cursor: pointer;
+
+  &:hover {
+    background-color: var(--menu-hover-bg, #f1f5f9);
+  }
+}
+
+.sidebar-checkbox {
+  margin-right: var(--menu-checkbox-margin-right, 8px);
+  cursor: pointer;
+  accent-color: var(--menu-accent-color, #6366f1);
+  width: 15px;
+  height: 15px;
+}
+
+.side-bar-item-content {
+  display: flex;
+  align-items: center;
+  flex-grow: 1;
+  gap: 8px;
+  user-select: none;
+}
+
+.file-icon {
+  font-size: 18px;
+  color: var(--menu-file-icon-color, #64748b);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.side-bar-item-title {
+  font-size: var(--menu-font-size, 14px);
+  font-weight: 400;
+  color: var(--menu-item-text-color, #334155);
 }
