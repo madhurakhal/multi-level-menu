@@ -2,6 +2,10 @@
 
 An Angular workspace containing the `multi-level-menu` library and a small demo application. The library renders nested folders and selectable menu items, supports custom folder/item templates, and maintains checked state through the tree.
 
+## Preview
+
+![Multi-level menu preview](docs/assets/multi-level-menu-preview.png)
+
 ## Workspace layout
 
 - `projects/multi-level-menu` — publishable Angular library.
