@@ -1,6 +1,6 @@
 # Angular Multi-Level Menu
 
-An Angular workspace containing the `multi-level-menu` library and a small demo application. The library renders nested folders and selectable menu items, supports custom folder/item templates, and maintains checked state through the tree.
+An Angular workspace containing the `@madhurakhalmagar/ngx-folder-tree` library and a small demo application. The library renders nested folders and selectable menu items, supports custom folder/item templates, and maintains checked state through the tree.
 
 ## Preview
 
@@ -39,7 +39,7 @@ import {
   MultiLevelMenu,
   FolderTemplateDirective,
   MenuItemTemplateDirective,
-} from 'multi-level-menu';
+} from '@madhurakhalmagar/ngx-folder-tree';
 
 @Component({
   imports: [MultiLevelMenu, FolderTemplateDirective, MenuItemTemplateDirective],

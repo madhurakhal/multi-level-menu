@@ -1,5 +1,5 @@
 import { Component, signal } from '@angular/core';
-import { MultiLevelMenu, type SidebarMenuFolder, type SidebarMenuItem, FolderTemplateDirective, MenuItemTemplateDirective } from 'multi-level-menu';
+import { MultiLevelMenu, type SidebarMenuFolder, type SidebarMenuItem, FolderTemplateDirective, MenuItemTemplateDirective } from '@madhurakhalmagar/ngx-folder-tree';
 
 @Component({
   selector: 'app-root',

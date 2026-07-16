@@ -5,7 +5,7 @@ A highly customizable, tree-structured sidebar navigation menu for Angular appli
 ## Installation
 
 ```bash
-npm install multi-level-menu
+npm install @madhurakhalmagar/ngx-folder-tree
 ```
 
 Make sure you import **Material Symbols** in your `index.html` (or equivalent global styles) for default folder/file icons:
@@ -21,7 +21,7 @@ Make sure you import **Material Symbols** in your `index.html` (or equivalent gl
 Create a nested structure using `SidebarMenuFolder` and `SidebarMenuItem` types:
 
 ```typescript
-import { type SidebarMenuFolder, type SidebarMenuItem } from 'multi-level-menu';
+import { type SidebarMenuFolder, type SidebarMenuItem } from '@madhurakhalmagar/ngx-folder-tree';
 
 const menus: (SidebarMenuFolder | SidebarMenuItem)[] = [
   {
@@ -61,7 +61,7 @@ import {
   MenuItemTemplateDirective,
   type SidebarMenuFolder,
   type SidebarMenuItem,
-} from 'multi-level-menu';
+} from '@madhurakhalmagar/ngx-folder-tree';
 
 @Component({
   selector: 'app-root',
