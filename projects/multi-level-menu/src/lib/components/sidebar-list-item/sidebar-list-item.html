@@ -1,9 +1,9 @@
 @if(hasTemplate()) {
     <ng-container *ngTemplateOutlet="itemTemplate(); context: { $implicit: item(), isChecked: item().checked, select: select.bind(this) }"></ng-container>
 }@else {
-<input type="checkbox" class="sidebar-checkbox" [checked]="item().checked" (click)="select($event)"/>
-<div class="side-bar-item-content" (click)="select($event)">
+<input type="checkbox" class="sidebar-checkbox" [checked]="item().checked" [attr.aria-label]="'Select ' + item().title" (change)="select($event)"/>
+<button type="button" class="side-bar-item-content" role="treeitem" [attr.aria-selected]="item().checked" (click)="select($event)">
     <span class="material-symbols-outlined file-icon">description</span>
     <span class="side-bar-item-title">{{ title() }}</span>
-</div>
+</button>
 }

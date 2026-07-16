@@ -1,4 +1,4 @@
-import { Component, computed, input, model, output, TemplateRef } from '@angular/core';
+import { Component, computed, input, model, TemplateRef } from '@angular/core';
 import { SidebarMenuItem } from '../../interfaces/sidebar-menu.interface';
 import { NgTemplateOutlet } from '@angular/common';
 import { MenuItemContext } from '../../interfaces/menuitem-template.context';

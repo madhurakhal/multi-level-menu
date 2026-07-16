@@ -1,59 +1,67 @@
-# AngularList
+# Angular Multi-Level Menu
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 22.0.4.
+An Angular workspace containing the `multi-level-menu` library and a small demo application. The library renders nested folders and selectable menu items, supports custom folder/item templates, and maintains checked state through the tree.
 
-## Development server
+## Workspace layout
 
-To start a local development server, run:
+- `projects/multi-level-menu` — publishable Angular library.
+- `src/app` — demo application for developing and verifying the library.
 
-```bash
-ng serve
-```
+The complete consumer-facing API and theming guide are in the [library README](projects/multi-level-menu/README.md).
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
-
-## Code scaffolding
-
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
+## Run the demo
 
 ```bash
-ng generate component component-name
+npm install
+npm start
 ```
 
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
+Open `http://localhost:4200/`.
+
+## Use the library locally
+
+Build the package with:
 
 ```bash
-ng generate --help
+npm run ng -- build multi-level-menu --configuration production
 ```
 
-## Building
+The generated package is written to `dist/multi-level-menu`.
 
-To build the project run:
+In a standalone Angular component, import the menu and optional template directives:
+
+```ts
+import {
+  MultiLevelMenu,
+  FolderTemplateDirective,
+  MenuItemTemplateDirective,
+} from 'multi-level-menu';
+
+@Component({
+  imports: [MultiLevelMenu, FolderTemplateDirective, MenuItemTemplateDirective],
+})
+export class App {}
+```
+
+```html
+<multi-level-side-menu
+  [(menus)]="menus"
+  (menuItemSelected)="handleSelectMenu($event)">
+</multi-level-side-menu>
+```
+
+## Quality checks
 
 ```bash
-ng build
+# Demo application
+npm run build
+npm test
+
+# Library
+npm run ng -- build multi-level-menu --configuration production
+npm run ng -- test multi-level-menu --watch=false
 ```
 
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
+## Notes
 
-## Running unit tests
-
-To execute unit tests with the [Vitest](https://vitest.dev/) test runner, use the following command:
-
-```bash
-ng test
-```
-
-## Running end-to-end tests
-
-For end-to-end (e2e) testing, run:
-
-```bash
-ng e2e
-```
-
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
-
-## Additional Resources
-
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+The default icons use Material Symbols. Add the Material Symbols stylesheet to the consuming application, or provide custom templates using `multiLevelFolderTemplate` and `multiLevelMenuItemTemplate`.

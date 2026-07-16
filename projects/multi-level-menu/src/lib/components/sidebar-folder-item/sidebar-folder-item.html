@@ -10,24 +10,25 @@
 </ng-container>
 
 }@else {
-<div class="side-bar-folder-header">
-    <input type="checkbox" class="sidebar-checkbox" [checked]="folder().checked" (click)="toggleFolder($event)" />
-    <span class="material-symbols-outlined folder-icon" (click)="toggle()">
+<div class="side-bar-folder-header" role="treeitem" [attr.aria-expanded]="hasMenuOrFolders() ? isExpanded() : null">
+    <input type="checkbox" class="sidebar-checkbox" [checked]="folder().checked" [indeterminate]="isIndeterminate()"
+        [attr.aria-label]="'Select ' + folder().title" (change)="toggleFolder($event)" />
+    <span class="material-symbols-outlined folder-icon" aria-hidden="true">
         {{ isExpanded() ? 'folder_open' : 'folder' }}
     </span>
-    <div class="side-bar-folder-header-title" (click)="toggle()">
+    <button type="button" class="side-bar-folder-header-title" (click)="toggle()">
         <span>{{ folder().title }}</span>
-    </div>
-    <div class="side-bar-folder-header-icon" (click)="toggle()">
+    </button>
+    <button type="button" class="side-bar-folder-header-icon" [attr.aria-label]="(isExpanded() ? 'Collapse ' : 'Expand ') + folder().title" (click)="toggle()">
         <span class="material-symbols-outlined expand-arrow">
             {{ isExpanded() ? 'expand_less' : 'expand_more' }}
         </span>
-    </div>
+    </button>
 </div>
 }
 
 @if(hasMenuOrFolders()) {
-<ul class="inner-sidebar-folder-menu" [class.hidden]="!isExpanded()">
+<ul class="inner-sidebar-folder-menu" role="group" [class.hidden]="!isExpanded()">
     @if(hasFolders()) {
     @for (folder of folders(); track folder.folder_id) {
     <li>
@@ -43,7 +44,7 @@
     @if(hasMenuItems()) {
     @for (item of menuItems(); track item.id) {
     <li>
-        <sidebar-list-item [item]="item" (itemChange)="handleItemChanged(item)"
+        <sidebar-list-item [item]="item" (itemChange)="handleItemChanged($event)"
             [itemTemplate]="itemTemplate()">
         ></sidebar-list-item>
     </li>
