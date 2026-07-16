@@ -8,8 +8,8 @@ import { MenuItemTemplateDirective } from './directives/menu-item.template.direc
 @Component({
   selector: 'multi-level-side-menu',
   imports: [SideBarFolderItem, SideBarListItem],
-  template: `<ul class="side-bar-folder-menu">
-    @for(item of menus(); track item.id) {
+  template: `<ul class="side-bar-folder-menu" role="tree">
+    @for(item of menus(); track item.type + ':' + item.id) {
       @switch(item.type) {
         @case ('folder') {
           <li class="side-bar-folder-menu-folder">
@@ -50,19 +50,16 @@ export class MultiLevelMenu {
 
 
   handleItemChanged(item: SidebarMenuItem) {
-    // this isChecked is false during item selection process
-    const isChecked = !item.checked
-    if (isChecked) {
+    if (item.checked) {
       this.menuItemSelected.emit(item)
     }
     this.menus.update(menus => {
       return menus.map(menu => {
         if (menu.type === 'item' && menu.id === item.id) {
-          return { ...menu, checked: isChecked };
+          return { ...menu, checked: item.checked };
         }
         return menu;
       });
     });
   }
 }
-

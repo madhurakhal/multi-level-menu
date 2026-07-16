@@ -49,8 +49,10 @@ export class SideBarFolderItem {
   atLeastOneChecked = computed(() => {
     const menuItems = this.menuItems();
     const folders = this.folders();
-    return menuItems.some(item => item.checked) || folders.some(folder => folder.checked);
+    return menuItems.some(item => item.checked) || folders.some(folder => this.hasSelectedDescendant(folder));
   });
+
+  readonly isIndeterminate = computed(() => !this.folder().checked && this.atLeastOneChecked());
 
   handleFolderUpdate(updatedFolder: SidebarMenuFolder) {
     this.folder.update(folder => {
@@ -74,7 +76,7 @@ export class SideBarFolderItem {
     this.folder.update(folder => {
       const menuItems = folder.menuItems || [];
       const updatedMenuItems = menuItems.map(menuItem =>
-        menuItem.id === item.id ? { ...menuItem, checked: !menuItem.checked } : menuItem
+        menuItem.id === item.id ? { ...menuItem, checked: item.checked } : menuItem
       );
 
       const folders = folder.folders || [];
@@ -87,7 +89,7 @@ export class SideBarFolderItem {
       };
     });
 
-    if (!item.checked) {
+    if (item.checked) {
       this.itemChanged.emit(item);
     }
   }
@@ -112,5 +114,11 @@ export class SideBarFolderItem {
         this.updateFolderRecursive(subFolder, checked)
       ),
     };
+  }
+
+  private hasSelectedDescendant(folder: SidebarMenuFolder): boolean {
+    return folder.checked
+      || folder.menuItems?.some(item => item.checked) === true
+      || folder.folders?.some(subFolder => this.hasSelectedDescendant(subFolder)) === true;
   }
 }

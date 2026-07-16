@@ -8,3 +8,4 @@ import { MultiLevelMenu } from "./lib/multi-level-menu";
 export { MultiLevelMenu, FolderTemplateDirective , MenuItemTemplateDirective } 
 export type { SidebarMenuFolder, SidebarMenuItem } from "./lib/interfaces/sidebar-menu.interface";
 export type { SidebarFolderContext } from "./lib/interfaces/folder-template.context";
+export type { MenuItemContext } from "./lib/interfaces/menuitem-template.context";

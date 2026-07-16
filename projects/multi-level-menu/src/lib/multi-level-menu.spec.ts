@@ -19,4 +19,17 @@ describe('MultiLevelMenu', () => {
   it('should create', () => {
     expect(component).toBeTruthy();
   });
+
+  it('preserves a top-level item checked state and emits selection', () => {
+    component.menus.set([
+      { id: 1, title: 'Item', parent_id: null, type: 'item', checked: false },
+    ]);
+    let selected = false;
+    component.menuItemSelected.subscribe(item => selected = item.checked);
+
+    component.handleItemChanged({ id: 1, title: 'Item', parent_id: null, type: 'item', checked: true });
+
+    expect(component.menus()[0].checked).toBe(true);
+    expect(selected).toBe(true);
+  });
 });

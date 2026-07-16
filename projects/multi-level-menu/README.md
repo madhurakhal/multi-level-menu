@@ -27,7 +27,7 @@ const menus: (SidebarMenuFolder | SidebarMenuItem)[] = [
   {
     id: 1,
     title: 'Our Company',
-    foldder_id: 1,
+    folder_id: 1,
     type: 'folder',
     checked: false,
     menuItems: [
@@ -38,7 +38,7 @@ const menus: (SidebarMenuFolder | SidebarMenuItem)[] = [
       {
         id: 3,
         title: 'Development Teams',
-        foldder_id: 3,
+        folder_id: 3,
         type: 'folder',
         checked: false,
         menuItems: [
@@ -55,12 +55,18 @@ Import `MultiLevelMenu` in your standalone component's `imports` array:
 
 ```typescript
 import { Component, signal } from '@angular/core';
-import { MultiLevelMenu, type SidebarMenuFolder, type SidebarMenuItem } from 'multi-level-menu';
+import {
+  MultiLevelMenu,
+  FolderTemplateDirective,
+  MenuItemTemplateDirective,
+  type SidebarMenuFolder,
+  type SidebarMenuItem,
+} from 'multi-level-menu';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [MultiLevelMenu],
+  imports: [MultiLevelMenu, FolderTemplateDirective, MenuItemTemplateDirective],
   templateUrl: './app.html'
 })
 export class App {
@@ -76,7 +82,7 @@ export class App {
 ```html
 <multi-level-side-menu 
   [(menus)]="menus" 
-  (menuSelected)="handleSelectMenu($event)">
+  (menuItemSelected)="handleSelectMenu($event)">
 </multi-level-side-menu>
 ```
 
@@ -122,7 +128,7 @@ multi-level-side-menu {
 
 ## Customizing Templates
 
-If the default layout does not match your design requirements, you can pass a custom template using `ng-template` and the `[sideBarTemplate]` input.
+If the default layout does not match your design requirements, project an `ng-template` marked with `multiLevelFolderTemplate` or `multiLevelMenuItemTemplate`. Import the corresponding directives in the standalone component that declares the template.
 
 ### Template Context Contract
 The custom template receives a context object of type `SidebarFolderContext`:
@@ -137,11 +143,11 @@ The custom template receives a context object of type `SidebarFolderContext`:
 
 ### Custom Template Example
 
-Define your custom folder template in your parent component's HTML, and pass it to the `[sideBarTemplate]` input:
+Define your custom folder template in the parent template:
 
 ```html
 <!-- app.component.html -->
-<ng-template #customFolderTemplate 
+<ng-template multiLevelFolderTemplate
   let-folder 
   let-toggle="toggle" 
   let-isExpanded="isExpanded" 
@@ -170,9 +176,7 @@ Define your custom folder template in your parent component's HTML, and pass it 
   </div>
 </ng-template>
 
-<multi-level-side-menu 
-  [(menus)]="menus" 
-  [sideBarTemplate]="customFolderTemplate">
+<multi-level-side-menu [(menus)]="menus">
 </multi-level-side-menu>
 ```
 
@@ -184,5 +188,6 @@ Define your custom folder template in your parent component's HTML, and pass it 
 
 #### Inputs & Outputs
 * **`[(menus)]`** (`model<(SidebarMenuFolder | SidebarMenuItem)[]>`): Two-way model binding representing the menu configuration structure.
-* **`[sideBarTemplate]`** (`input<TemplateRef<SidebarFolderContext>>`): Optional custom template reference used to customize folders rendering.
-* **`(menuSelected)`** (`output<SidebarMenuItem>`): Event emitted whenever an individual menu item is selected (checked is set to `true`).
+* **`multiLevelFolderTemplate`**: Optional projected template directive used to customize folder rendering.
+* **`multiLevelMenuItemTemplate`**: Optional projected template directive used to customize item rendering.
+* **`(menuItemSelected)`** (`output<SidebarMenuItem>`): Event emitted whenever an individual menu item is selected (checked is set to `true`).
