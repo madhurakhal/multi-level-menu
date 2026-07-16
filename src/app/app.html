@@ -1,6 +1,11 @@
 <div class="menu-container">
   <multi-level-side-menu [(menus)]="menus" (menuItemSelected)="handleSelectMenu($event)">
-    <ng-template multiLevelFolderTemplate let-folder let-atLeastOneChecked="atLeastOneChecked" let-toggle="toggle" let-isExpanded="isExpanded"
+   
+  </multi-level-side-menu>
+</div>
+
+
+ <ng-template multiLevelFolderTemplate let-folder let-atLeastOneChecked="atLeastOneChecked" let-toggle="toggle" let-isExpanded="isExpanded"
       let-toggleFolder="toggleFolder">
       <div class="side-bar-folder-container">
         <div class="side-bar-folder-header">
@@ -36,5 +41,3 @@
       <input type="checkbox" class="sidebar-checkbox" [checked]="isChecked" (click)="select($event)" />
       {{ item.title }}
     </ng-template>
-  </multi-level-side-menu>
-</div>
