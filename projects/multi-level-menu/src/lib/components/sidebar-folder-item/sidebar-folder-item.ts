@@ -20,7 +20,7 @@ export class SideBarFolderItem {
   sideBarFolderTemplate = input<TemplateRef<SidebarFolderContext>>();
   folder = model.required<SidebarMenuFolder>();
   folderUpdated = output<SidebarMenuFolder>();
-
+  itemSelected = output<SidebarMenuItem>();
 
   readonly hasTemplate = computed(() => !!this.sideBarFolderTemplate());
 
@@ -107,6 +107,9 @@ export class SideBarFolderItem {
     });
 
     this.folderUpdated.emit(this.folder())
+    if (isChecked) {
+      this.itemSelected.emit(item);
+    }
   }
 
 

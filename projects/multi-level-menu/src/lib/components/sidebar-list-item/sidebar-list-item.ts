@@ -9,12 +9,12 @@ import { SidebarMenuItem } from '../../interfaces/sidebar-menu.interface';
 })
 export class SideBarListItem {
   readonly item = model.required<SidebarMenuItem>();
-  readonly itemChanged = output<boolean>();
+  readonly itemSelected = output<boolean>();
 
   readonly title = computed(() => this.item().title);
 
   select(evt: Event) {
     evt.preventDefault();
-    this.itemChanged.emit(!this.item().checked);
+    this.itemSelected.emit(!this.item().checked);
   }
 }

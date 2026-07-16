@@ -1,8 +1,4 @@
 import { Component, signal } from '@angular/core';
-// import { interval, map, mergeMap, of, take } from 'rxjs';
-// import { ItemSelector } from './shared/components/item-selector-component/item-selector-component';
-// import { sideBarMenu } from './shared/components/side-bar-menu/side-bar-menu';
-// import { HideAfter } from './shared/components/hide-after';
 import { MultiLevelMenu, type SidebarMenuFolder, type SidebarMenuItem } from 'multi-level-menu';
 
 @Component({
@@ -83,5 +79,9 @@ export class App {
 
 
     // 
+  }
+
+  handleSelectMenu(item: SidebarMenuItem) {
+    console.log(item);
   }
 }

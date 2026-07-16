@@ -41,7 +41,7 @@
     @if(hasMenuItems()) {
     @for (item of menuItems(); track item.id) {
     <li>
-        <sidebar-list-item [item]="item" (itemChanged)="handleItemChanged(item, $event)"></sidebar-list-item>
+        <sidebar-list-item [item]="item" (itemSelected)="handleItemChanged(item, $event)"></sidebar-list-item>
     </li>
     }
     }
