@@ -1,8 +1,9 @@
 import { NgTemplateOutlet } from '@angular/common';
-import { Component, computed, effect, input, model, output, signal, TemplateRef } from '@angular/core';
+import { Component, computed, input, model, output, signal, TemplateRef } from '@angular/core';
 import { SidebarMenuFolder, SidebarMenuItem } from '../../interfaces/sidebar-menu.interface';
-import { SidebarFolderContext } from '../../interfaces/sidebar-folder.context';
+import { SidebarFolderContext } from '../../interfaces/folder-template.context';
 import { SideBarListItem } from '../sidebar-list-item/sidebar-list-item';
+import { MenuItemContext } from '../../interfaces/menuitem-template.context';
 
 
 
@@ -17,12 +18,12 @@ import { SideBarListItem } from '../sidebar-list-item/sidebar-list-item';
   styleUrl: './sidebar-folder-item.scss',
 })
 export class SideBarFolderItem {
-  sideBarFolderTemplate = input<TemplateRef<SidebarFolderContext>>();
+  folderTemplate = input<TemplateRef<SidebarFolderContext>>();
+  itemTemplate = input<TemplateRef<MenuItemContext>>();
   folder = model.required<SidebarMenuFolder>();
-  folderUpdated = output<SidebarMenuFolder>();
-  itemSelected = output<SidebarMenuItem>();
+  itemChanged = output<SidebarMenuItem>();
 
-  readonly hasTemplate = computed(() => !!this.sideBarFolderTemplate());
+  readonly hasTemplate = computed(() => !!this.folderTemplate());
 
   readonly menuItems = computed(() => this.folder().menuItems || []);
   readonly folders = computed(() => this.folder().folders || []);
@@ -40,15 +41,9 @@ export class SideBarFolderItem {
 
   toggleFolder(evt: Event) {
     evt.preventDefault();
+    const newCheckedState = !this.folder().checked;
 
-    this.folder.update(folder => {
-      return {
-        ...folder,
-        checked: !folder.checked,
-      };
-    });
-    this.updateChildren();
-    this.folderUpdated.emit(this.folder())
+    this.folder.update(folder => this.updateFolderRecursive(folder, newCheckedState));
   }
 
   atLeastOneChecked = computed(() => {
@@ -57,81 +52,50 @@ export class SideBarFolderItem {
     return menuItems.some(item => item.checked) || folders.some(folder => folder.checked);
   });
 
-  allChecked = computed(() => {
-    const menuItems = this.menuItems();
-    const folders = this.folders();
-    return menuItems.every(item => item.checked) && folders.every(folder => folder.checked);
-  });
-
-  constructor() {
-    effect(() => {
-      const checked = this.allChecked();
-      this.folder.update(folder => {
-        return {
-          ...folder,
-          checked
-        }
-      });
-      this.folderUpdated.emit(this.folder())
-    })
-  }
-
   handleFolderUpdate(updatedFolder: SidebarMenuFolder) {
-    if (this.folder().folders?.length) {
-      this.folder.update(folder => {
-        return {
-          ...folder,
-          folders: folder.folders?.map(f =>
-            f.id === updatedFolder.id ? updatedFolder : f
-          )
-        }
-      })
-    }
-    this.folderUpdated.emit(this.folder())
+    this.folder.update(folder => {
+      const folders = folder.folders || [];
+      const updatedFolders = folders.map(f =>
+        f.id === updatedFolder.id ? updatedFolder : f
+      );
+
+      const menuItems = folder.menuItems || [];
+      const allChecked = menuItems.every(item => item.checked) && updatedFolders.every(f => f.checked);
+
+      return {
+        ...folder,
+        folders: updatedFolders,
+        checked: allChecked,
+      };
+    });
   }
 
-  handleItemChanged(item: SidebarMenuItem, isChecked: boolean) {
+  handleItemChanged(item: SidebarMenuItem) {
     this.folder.update(folder => {
       const menuItems = folder.menuItems || [];
+      const updatedMenuItems = menuItems.map(menuItem =>
+        menuItem.id === item.id ? { ...menuItem, checked: !menuItem.checked } : menuItem
+      );
 
-      const updatedMenuItems = menuItems.map(menuItem => {
-        if (menuItem.id === item.id) {
-          return { ...menuItem, checked: isChecked };
-        }
-        return menuItem;
-      });
+      const folders = folder.folders || [];
+      const allChecked = updatedMenuItems.every(item => item.checked) && folders.every(f => f.checked);
+
       return {
         ...folder,
         menuItems: updatedMenuItems,
+        checked: allChecked,
       };
     });
 
-    this.folderUpdated.emit(this.folder())
-    if (isChecked) {
-      this.itemSelected.emit(item);
+    if (!item.checked) {
+      this.itemChanged.emit(item);
     }
   }
 
-  handleFolderItemChanged(item: SidebarMenuItem) {
-    this.itemSelected.emit(item);
+  handleMenuItemChanged(item: SidebarMenuItem) {
+    this.itemChanged.emit(item);
   }
 
-
-
-  private updateChildren() {
-    const newCheckedState = this.folder().checked;
-    this.folder.update(folder => {
-      return {
-        ...folder,
-        menuItems: folder.menuItems?.map(item => ({
-          ...item,
-          checked: newCheckedState,
-        })),
-        checked: newCheckedState,
-        folders: folder.folders?.map(subfolder => this.updateFolderRecursive(subfolder, newCheckedState))
-      }
-    });
-  }
 
   private updateFolderRecursive(
     folder: SidebarMenuFolder,

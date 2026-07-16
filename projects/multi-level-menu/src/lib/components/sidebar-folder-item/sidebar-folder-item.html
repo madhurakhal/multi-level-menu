@@ -1,5 +1,5 @@
 @if(hasTemplate()) {
-<ng-container *ngTemplateOutlet="sideBarFolderTemplate()
+<ng-container *ngTemplateOutlet="folderTemplate()
             ;context: {
                 $implicit: folder(),
                 toggle: toggle.bind(this),
@@ -29,10 +29,12 @@
 @if(hasMenuOrFolders()) {
 <ul class="inner-sidebar-folder-menu" [class.hidden]="!isExpanded()">
     @if(hasFolders()) {
-    @for (folder of folders(); track folder.foldder_id) {
+    @for (folder of folders(); track folder.folder_id) {
     <li>
-        <sidebar-folder-item [folder]="folder" (folderUpdated)="handleFolderUpdate($event)"
-            [sideBarFolderTemplate]="sideBarFolderTemplate()" (itemSelected)="handleFolderItemChanged($event)">
+        <sidebar-folder-item [folder]="folder" (folderChange)="handleFolderUpdate($event)"
+            [folderTemplate]="folderTemplate()"
+            [itemTemplate]="itemTemplate()"
+            (itemChanged)="handleMenuItemChanged($event)">
 
         </sidebar-folder-item>
     </li>
@@ -41,7 +43,9 @@
     @if(hasMenuItems()) {
     @for (item of menuItems(); track item.id) {
     <li>
-        <sidebar-list-item [item]="item" (itemSelected)="handleItemChanged(item, $event)"></sidebar-list-item>
+        <sidebar-list-item [item]="item" (itemChange)="handleItemChanged(item)"
+            [itemTemplate]="itemTemplate()">
+        ></sidebar-list-item>
     </li>
     }
     }
