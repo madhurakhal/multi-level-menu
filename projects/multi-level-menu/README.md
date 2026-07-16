@@ -1,64 +1,188 @@
 # MultiLevelMenu
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 22.0.0.
+A highly customizable, tree-structured sidebar navigation menu for Angular applications. It supports nested folders and items, tri-state checkbox state propagation (select children, update parent status), smooth expand/collapse triggers, and custom template rendering.
 
-## Code scaffolding
-
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
+## Installation
 
 ```bash
-ng generate component component-name
+npm install multi-level-menu
 ```
 
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
-
-```bash
-ng generate --help
+Make sure you import **Material Symbols** in your `index.html` (or equivalent global styles) for default folder/file icons:
+```html
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet" />
 ```
 
-## Building
+---
 
-To build the library, run:
+## Getting Started
 
-```bash
-ng build multi-level-menu
+### 1. Define Your Menu Data
+Create a nested structure using `SidebarMenuFolder` and `SidebarMenuItem` types:
+
+```typescript
+import { type SidebarMenuFolder, type SidebarMenuItem } from 'multi-level-menu';
+
+const menus: (SidebarMenuFolder | SidebarMenuItem)[] = [
+  {
+    id: 1,
+    title: 'Our Company',
+    foldder_id: 1,
+    type: 'folder',
+    checked: false,
+    menuItems: [
+      { id: 1, title: 'Contact Us', parent_id: 1, type: 'item', checked: false },
+      { id: 2, title: 'Locations', parent_id: 1, type: 'item', checked: false },
+    ],
+    folders: [
+      {
+        id: 3,
+        title: 'Development Teams',
+        foldder_id: 3,
+        type: 'folder',
+        checked: false,
+        menuItems: [
+          { id: 3, title: 'Engineering', parent_id: 3, type: 'item', checked: false },
+        ]
+      }
+    ]
+  }
+];
 ```
 
-This command will compile your project, and the build artifacts will be placed in the `dist/` directory.
+### 2. Import MultiLevelMenu
+Import `MultiLevelMenu` in your standalone component's `imports` array:
 
-### Publishing the Library
+```typescript
+import { Component, signal } from '@angular/core';
+import { MultiLevelMenu, type SidebarMenuFolder, type SidebarMenuItem } from 'multi-level-menu';
 
-Once the project is built, you can publish your library by following these steps:
+@Component({
+  selector: 'app-root',
+  standalone: true,
+  imports: [MultiLevelMenu],
+  templateUrl: './app.html'
+})
+export class App {
+  menus = signal<(SidebarMenuFolder | SidebarMenuItem)[]>(/* your data */);
 
-1. Navigate to the `dist` directory:
-
-   ```bash
-   cd dist/multi-level-menu
-   ```
-
-2. Run the `npm publish` command to publish your library to the npm registry:
-   ```bash
-   npm publish
-   ```
-
-## Running unit tests
-
-To execute unit tests with the [Karma](https://karma-runner.github.io) test runner, use the following command:
-
-```bash
-ng test
+  handleSelectMenu(item: SidebarMenuItem) {
+    console.log('Selected menu item:', item);
+  }
+}
 ```
 
-## Running end-to-end tests
-
-For end-to-end (e2e) testing, run:
-
-```bash
-ng e2e
+### 3. Place the Component in your Template
+```html
+<multi-level-side-menu 
+  [(menus)]="menus" 
+  (menuSelected)="handleSelectMenu($event)">
+</multi-level-side-menu>
 ```
 
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
+---
 
-## Additional Resources
+## Customizing CSS / Theming
 
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+The default styles utilize CSS custom properties (variables), allowing you to customize colors, spacing, and sizing easily from your global style sheet or parent component:
+
+```css
+/* Style override in your app's stylesheet */
+multi-level-side-menu {
+  --menu-accent-color: #4f46e5;          /* Indigo accent */
+  --menu-hover-bg: #f8fafc;              /* Slate-50 hover */
+  --menu-font-size: 13px;                /* Compact font sizes */
+  --menu-folder-icon-color: #d97706;     /* Amber folders */
+  --menu-file-icon-color: #3b82f6;       /* Blue files */
+  --menu-tree-line-color: #cbd5e1;       /* Tree connection lines */
+}
+```
+
+### Available Custom CSS Properties
+
+| CSS Custom Property | Default Value | Description |
+|---|---|---|
+| `--menu-text-color` | `#334155` | General text color of the menu |
+| `--menu-bg-color` | `#ffffff` | Background color of the menu container |
+| `--menu-border-color` | `#e2e8f0` | Border color (if enabled) |
+| `--menu-border-radius` | `12px` | Border radius of the menu container |
+| `--menu-max-width` | `320px` | Max width of the menu container |
+| `--menu-item-border-radius` | `6px` | Border radius of items on hover |
+| `--menu-accent-color` | `#6366f1` | Color used for checkboxes |
+| `--menu-hover-bg` | `#f1f5f9` | Background highlight on hover |
+| `--menu-file-icon-color` | `#64748b` | Color of document file icons |
+| `--menu-folder-icon-color` | `#eab308` | Color of folder icons |
+| `--menu-folder-text-color` | `#1e293b` | Text color for folder names |
+| `--menu-item-text-color` | `#334155` | Text color for file names |
+| `--menu-expand-arrow-color` | `#94a3b8` | Color of the expand/collapse arrow |
+| `--menu-tree-line-color` | `#e2e8f0` | Color of hierarchical branch lines |
+| `--menu-transition-speed` | `0.15s` | Speed of hover and collapse animations |
+
+---
+
+## Customizing Templates
+
+If the default layout does not match your design requirements, you can pass a custom template using `ng-template` and the `[sideBarTemplate]` input.
+
+### Template Context Contract
+The custom template receives a context object of type `SidebarFolderContext`:
+
+| Property | Type | Description |
+|---|---|---|
+| `$implicit` | `SidebarMenuFolder` | The current folder data object |
+| `toggle` | `() => void` | Function to collapse or expand the folder |
+| `isExpanded` | `boolean` | Flag indicating if the folder is currently expanded |
+| `toggleFolder` | `(evt: Event) => void` | Toggles the checkbox selection of the folder and all its children |
+| `atLeastOneChecked` | `() => boolean` | Returns true if at least one descendant is checked (tri-state check) |
+
+### Custom Template Example
+
+Define your custom folder template in your parent component's HTML, and pass it to the `[sideBarTemplate]` input:
+
+```html
+<!-- app.component.html -->
+<ng-template #customFolderTemplate 
+  let-folder 
+  let-toggle="toggle" 
+  let-isExpanded="isExpanded" 
+  let-toggleFolder="toggleFolder" 
+  let-atLeastOneChecked="atLeastOneChecked">
+  
+  <div class="custom-folder-row">
+    <!-- Tri-state checkbox representation -->
+    @if (folder.checked) {
+      <input type="checkbox" [checked]="true" (change)="toggleFolder($event)" />
+    } @else if (atLeastOneChecked()) {
+      <span class="custom-indeterminate-checkbox" (click)="toggleFolder($event)">[-]</span>
+    } @else {
+      <input type="checkbox" [checked]="false" (change)="toggleFolder($event)" />
+    }
+
+    <!-- Clickable title to toggle collapse state -->
+    <span class="custom-folder-title" (click)="toggle()">
+      {{ folder.title }}
+    </span>
+
+    <!-- Expand/collapse arrow indicator -->
+    <button class="expand-toggle-btn" (click)="toggle()">
+      {{ isExpanded ? 'Collapse' : 'Expand' }}
+    </button>
+  </div>
+</ng-template>
+
+<multi-level-side-menu 
+  [(menus)]="menus" 
+  [sideBarTemplate]="customFolderTemplate">
+</multi-level-side-menu>
+```
+
+---
+
+## API Reference
+
+### `<multi-level-side-menu>`
+
+#### Inputs & Outputs
+* **`[(menus)]`** (`model<(SidebarMenuFolder | SidebarMenuItem)[]>`): Two-way model binding representing the menu configuration structure.
+* **`[sideBarTemplate]`** (`input<TemplateRef<SidebarFolderContext>>`): Optional custom template reference used to customize folders rendering.
+* **`(menuSelected)`** (`output<SidebarMenuItem>`): Event emitted whenever an individual menu item is selected (checked is set to `true`).

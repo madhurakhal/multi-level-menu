@@ -1,24 +1,69 @@
-.side-bar-folder-container {
-    display: block;
-    position: relative;
+:host {
+  display: block;
+  width: 100%;
 }
 
-.side-bar-folder-header{
-    display: flex;
-    align-items: center;
-    gap: 3px;
+.side-bar-folder-header {
+  display: flex;
+  align-items: center;
+  padding: 6px 8px;
+  border-radius: var(--menu-item-border-radius, 6px);
+  transition: background-color var(--menu-transition-speed, 0.15s) ease;
+  cursor: pointer;
+  gap: 8px;
+
+  &:hover {
+    background-color: var(--menu-hover-bg, #f1f5f9);
+  }
 }
 
-.innter-side-bar-folder-menu {
-    display: block;
-    margin-left: 10px;
+.sidebar-checkbox {
+  margin-right: 0;
+  cursor: pointer;
+  accent-color: var(--menu-accent-color, #6366f1);
+  width: 15px;
+  height: 15px;
+}
 
-    li {
-        list-style: none;
-        margin-left: 10px;
-    }
+.folder-icon {
+  font-size: 18px;
+  color: var(--menu-folder-icon-color, #eab308); /* Warm gold/yellow folder icon */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  user-select: none;
+}
+
+.side-bar-folder-header-title {
+  flex-grow: 1;
+  font-size: var(--menu-font-size, 14px);
+  font-weight: 500;
+  color: var(--menu-folder-text-color, #1e293b);
+  user-select: none;
+}
+
+.side-bar-folder-header-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--menu-expand-arrow-color, #94a3b8);
+  user-select: none;
+  
+  .expand-arrow {
+    font-size: 18px;
+  }
+}
+
+.inner-sidebar-folder-menu {
+  list-style: none;
+  padding: 0 0 0 12px;
+  margin: 4px 0 4px 16px;
+  border-left: 1.5px solid var(--menu-tree-line-color, #e2e8f0);
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
 }
 
 .hidden {
-    display: none;
+  display: none;
 }
