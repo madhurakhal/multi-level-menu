@@ -112,6 +112,10 @@ export class SideBarFolderItem {
     }
   }
 
+  handleFolderItemChanged(item: SidebarMenuItem) {
+    this.itemSelected.emit(item);
+  }
+
 
 
   private updateChildren() {

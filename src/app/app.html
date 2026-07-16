@@ -32,6 +32,6 @@
 
 
 <div class="menu-container">
-  <multi-level-side-menu [(menus)]="menus">
+  <multi-level-side-menu [(menus)]="menus" (menuSelected)="handleSelectMenu($event)">
   </multi-level-side-menu>
 </div>

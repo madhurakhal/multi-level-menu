@@ -83,5 +83,7 @@ export class App {
 
   handleSelectMenu(item: SidebarMenuItem) {
     console.log(item);
+
+
   }
 }

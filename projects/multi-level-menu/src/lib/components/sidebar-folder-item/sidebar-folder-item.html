@@ -32,7 +32,7 @@
     @for (folder of folders(); track folder.foldder_id) {
     <li>
         <sidebar-folder-item [folder]="folder" (folderUpdated)="handleFolderUpdate($event)"
-            [sideBarFolderTemplate]="sideBarFolderTemplate()">
+            [sideBarFolderTemplate]="sideBarFolderTemplate()" (itemSelected)="handleFolderItemChanged($event)">
 
         </sidebar-folder-item>
     </li>
