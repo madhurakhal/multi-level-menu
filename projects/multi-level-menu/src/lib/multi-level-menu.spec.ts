@@ -1,17 +1,17 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { ListItem } from './list-item';
+import { MultiLevelMenu } from './multi-level-menu';
 
-describe('ListItem', () => {
-  let component: ListItem;
-  let fixture: ComponentFixture<ListItem>;
+describe('MultiLevelMenu', () => {
+  let component: MultiLevelMenu;
+  let fixture: ComponentFixture<MultiLevelMenu>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [ListItem],
+      imports: [MultiLevelMenu],
     }).compileComponents();
 
-    fixture = TestBed.createComponent(ListItem);
+    fixture = TestBed.createComponent(MultiLevelMenu);
     component = fixture.componentInstance;
     await fixture.whenStable();
   });

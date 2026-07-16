@@ -1,22 +1,22 @@
 import { NgTemplateOutlet } from '@angular/common';
 import { Component, computed, effect, input, model, output, signal, TemplateRef } from '@angular/core';
 import { SidebarMenuFolder, SidebarMenuItem } from '../../interfaces/sidebar-menu.interface';
-import { SideBarItem } from '../side-bar-item/side-bar-item';
 import { SidebarFolderContext } from '../../interfaces/sidebar-folder.context';
+import { SideBarListItem } from '../sidebar-list-item/sidebar-list-item';
 
 
 
 @Component({
-  selector: 'app-side-bar-folder',
+  selector: 'sidebar-folder-item',
   imports: [
-    SideBarItem,
-    SideBarFolder,
+    SideBarListItem,
+    SideBarFolderItem,
     NgTemplateOutlet
-],
-  templateUrl: './side-bar-folder.html',
-  styleUrl: './side-bar-folder.scss',
+  ],
+  templateUrl: './sidebar-folder-item.html',
+  styleUrl: './sidebar-folder-item.scss',
 })
-export class SideBarFolder {
+export class SideBarFolderItem {
   sideBarFolderTemplate = input<TemplateRef<SidebarFolderContext>>();
   folder = model.required<SidebarMenuFolder>();
   folderUpdated = output<SidebarMenuFolder>();

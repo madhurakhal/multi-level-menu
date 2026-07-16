@@ -29,9 +29,7 @@
                 "input": "public"
               }
             ],
-            "styles": [
-              "src/styles.scss"
-            ]
+            "styles": ["src/styles.scss"]
           },
           "configurations": {
             "production": {
@@ -71,6 +69,32 @@
         },
         "test": {
           "builder": "@angular/build:unit-test"
+        }
+      }
+    },
+    "multi-level-menu": {
+      "projectType": "library",
+      "root": "projects/multi-level-menu",
+      "sourceRoot": "projects/multi-level-menu/src",
+      "prefix": "lib",
+      "architect": {
+        "build": {
+          "builder": "@angular/build:ng-packagr",
+          "configurations": {
+            "production": {
+              "tsConfig": "projects/multi-level-menu/tsconfig.lib.prod.json"
+            },
+            "development": {
+              "tsConfig": "projects/multi-level-menu/tsconfig.lib.json"
+            }
+          },
+          "defaultConfiguration": "production"
+        },
+        "test": {
+          "builder": "@angular/build:unit-test",
+          "options": {
+            "tsConfig": "projects/multi-level-menu/tsconfig.spec.json"
+          }
         }
       }
     }

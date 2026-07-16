@@ -7,6 +7,9 @@
     "noPropertyAccessFromIndexSignature": true,
     "noImplicitReturns": true,
     "noFallthroughCasesInSwitch": true,
+    "paths": {
+      "multi-level-menu": ["./dist/multi-level-menu"]
+    },
     "skipLibCheck": true,
     "isolatedModules": true,
     "experimentalDecorators": true,
@@ -27,6 +30,12 @@
     },
     {
       "path": "./tsconfig.spec.json"
+    },
+    {
+      "path": "./projects/multi-level-menu/tsconfig.lib.json"
+    },
+    {
+      "path": "./projects/multi-level-menu/tsconfig.spec.json"
     }
   ]
 }
