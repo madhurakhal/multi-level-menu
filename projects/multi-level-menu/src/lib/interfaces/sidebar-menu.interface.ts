@@ -9,7 +9,7 @@ export type SidebarMenuItem = {
 }
 
 export type SidebarMenuFolder = Omit<SidebarMenuItem, 'parent_id' | 'type'> & {
-    foldder_id: number;
+    folder_id: number;
     menuItems?: SidebarMenuItem[];
     folders?: SidebarMenuFolder[];
     type: 'folder';

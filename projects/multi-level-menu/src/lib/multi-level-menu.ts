@@ -1,40 +1,46 @@
-import { Component, input, model, output, TemplateRef } from '@angular/core';
+import { Component, contentChild, model, output, viewChild } from '@angular/core';
 import { SideBarFolderItem } from './components/sidebar-folder-item/sidebar-folder-item';
 import { SideBarListItem } from './components/sidebar-list-item/sidebar-list-item';
+import { FolderTemplateDirective } from './directives/menu-folder-template.directive';
 import { SidebarMenuFolder, SidebarMenuItem } from './interfaces/sidebar-menu.interface';
-import { SidebarFolderContext } from './interfaces/sidebar-folder.context';
+import { MenuItemTemplateDirective } from './directives/menu-item.template.directive';
 
 @Component({
   selector: 'multi-level-side-menu',
   imports: [SideBarFolderItem, SideBarListItem],
-  template: ` <ul class="side-bar-folder-menu">
+  template: `<ul class="side-bar-folder-menu">
     @for(item of menus(); track item.id) {
-    @switch(item.type) {
-    @case ('folder') {
-    <li class="side-bar-folder-menu-folder">
-        <sidebar-folder-item [folder]="item" (folderUpdated)="handleFolderUpdate($event)"
-        [sideBarFolderTemplate]="sideBarTemplate()"
-        (itemSelected)="handleItemChangedInFolder($event)"
-        >
-        </sidebar-folder-item>
-    </li>
-    }
-    @default {
-    <li class="side-bar-folder-menu-item">
-        <sidebar-list-item [item]="item" (itemSelected)="handleItemChanged(item, $event)">
-        </sidebar-list-item>
-    </li>
-    }
-    }
+      @switch(item.type) {
+        @case ('folder') {
+          <li class="side-bar-folder-menu-folder">
+              <sidebar-folder-item 
+                [folder]="item" 
+                (folderChange)="handleFolderUpdate($event)"
+                [folderTemplate]="folderTemplate()?.templateRef"
+                [itemTemplate]="menuItemTemplate()?.templateRef"
+                (itemChanged)="handleItemChanged($event)"
+                />
+          </li>
+        }
+        @default {
+          <li class="side-bar-folder-menu-item">
+              <sidebar-list-item [item]="item" (itemChange)="handleItemChanged($event)"
+               [itemTemplate]="menuItemTemplate()?.templateRef"
+               />
+          </li>
+        }
+      }
     }
 </ul>`,
   styleUrl: './multi-level-menu.scss',
 })
 export class MultiLevelMenu {
-  menuSelected = output<SidebarMenuItem>()
+  menuItemSelected = output<SidebarMenuItem>()
   menus = model<(SidebarMenuFolder | SidebarMenuItem)[]>([]);
-  sideBarTemplate = input<TemplateRef<SidebarFolderContext>>();
+  // sideBarTemplate = input<TemplateRef<SidebarFolderContext>>();
 
+  folderTemplate = contentChild<FolderTemplateDirective>(FolderTemplateDirective);
+  menuItemTemplate = contentChild<MenuItemTemplateDirective>(MenuItemTemplateDirective);
 
   handleFolderUpdate(folder: SidebarMenuFolder) {
     this.menus.update(menus => {
@@ -43,10 +49,11 @@ export class MultiLevelMenu {
   }
 
 
-  handleItemChanged(item: SidebarMenuItem, isChecked: boolean) {
-    debugger
+  handleItemChanged(item: SidebarMenuItem) {
+    // this isChecked is false during item selection process
+    const isChecked = !item.checked
     if (isChecked) {
-      this.menuSelected.emit(item)
+      this.menuItemSelected.emit(item)
     }
     this.menus.update(menus => {
       return menus.map(menu => {
@@ -57,8 +64,5 @@ export class MultiLevelMenu {
       });
     });
   }
-
-  handleItemChangedInFolder(item: SidebarMenuItem) {
-    this.menuSelected.emit(item)
-  }
 }
+

@@ -1,37 +1,40 @@
-<ng-template #sidebarFolder let-folder let-atLeastOneChecked="atLeastOneChecked" let-toggle="toggle"
-  let-isExpanded="isExpanded" let-toggleFolder="toggleFolder">
-  <div class="side-bar-folder-container">
-    <div class="side-bar-folder-header">
-
-      @if(folder.checked) {
-      <input type="checkbox" [checked]="folder.checked" (click)="toggleFolder($event)" />
-
-
-      <!-- <input type="checkbox"  (click)="toggleFolder($event)" /> -->
-
-      }@else if (
-      atLeastOneChecked()
-      ) {
-      <span class="material-symbols-outlined" (click)="toggleFolder($event)">
-        flaky
-      </span>
-      } @else {
-      <input type="checkbox" [checked]="folder.checked" (click)="toggleFolder($event)" />
-      }
-      <div class="side-bar-folder-header-title">
-        <span>{{ folder.title }}</span>
-      </div>
-      <div class="side-bar-folder-header-icon" (click)="toggle()">
-        <span class="material-symbols-outlined">
-          {{ isExpanded ? 'expand_less' : 'expand_more' }}
-        </span>
-      </div>
-    </div>
-  </div>
-</ng-template>
-
-
 <div class="menu-container">
-  <multi-level-side-menu [(menus)]="menus">
+  <multi-level-side-menu [(menus)]="menus" (menuItemSelected)="handleSelectMenu($event)">
+    <ng-template multiLevelFolderTemplate let-folder let-atLeastOneChecked="atLeastOneChecked" let-toggle="toggle" let-isExpanded="isExpanded"
+      let-toggleFolder="toggleFolder">
+      <div class="side-bar-folder-container">
+        <div class="side-bar-folder-header">
+
+          @if(folder.checked) {
+          <input type="checkbox" [checked]="folder.checked" (click)="toggleFolder($event)" />
+
+
+          <!-- <input type="checkbox"  (click)="toggleFolder($event)" /> -->
+
+          }@else if (
+          atLeastOneChecked()
+          ) {
+          <span class="material-symbols-outlined" (click)="toggleFolder($event)">
+            flaky
+          </span>
+          } @else {
+          <input type="checkbox" [checked]="folder.checked" (click)="toggleFolder($event)" />
+          }
+          <div class="side-bar-folder-header-title">
+            <span>{{ folder.title }}</span>
+          </div>
+          <div class="side-bar-folder-header-icon" (click)="toggle()">
+            <span class="material-symbols-outlined">
+              {{ isExpanded ? 'expand_less' : 'expand_more' }}
+            </span>
+          </div>
+        </div>
+      </div>
+    </ng-template>
+
+    <ng-template multiLevelMenuItemTemplate let-item let-isChecked="isChecked" let-select="select">
+      <input type="checkbox" class="sidebar-checkbox" [checked]="isChecked" (click)="select($event)" />
+      {{ item.title }}
+    </ng-template>
   </multi-level-side-menu>
 </div>

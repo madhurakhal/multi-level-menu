@@ -1,29 +1,20 @@
 import { Component, signal } from '@angular/core';
-import { MultiLevelMenu, type SidebarMenuFolder, type SidebarMenuItem } from 'multi-level-menu';
+import { MultiLevelMenu, type SidebarMenuFolder, type SidebarMenuItem, FolderTemplateDirective, MenuItemTemplateDirective } from 'multi-level-menu';
 
 @Component({
   selector: 'app-root',
-  imports: [MultiLevelMenu],
+  imports: [MultiLevelMenu, FolderTemplateDirective, MenuItemTemplateDirective],
   templateUrl: './app.html',
   styleUrl: './app.scss'
 })
 export class App {
   protected readonly title = signal('angular-list');
 
-
-  get menus(): (SidebarMenuFolder | SidebarMenuItem)[] {
-    return this.menusSignal();
-  }
-
-  set menus(value: (SidebarMenuFolder | SidebarMenuItem)[]) {
-    this.menusSignal.set(value);
-  }
-
-  menusSignal = signal<(SidebarMenuFolder | SidebarMenuItem)[]>([
+  menus = signal<(SidebarMenuFolder | SidebarMenuItem)[]>([
     {
       id: 1,
       title: 'Our company',
-      foldder_id: 1,
+      folder_id: 1,
       type: 'folder',
       checked: false,
       menuItems: [
@@ -32,10 +23,10 @@ export class App {
       ],
       folders: [
         {
-          id: 3, title: 'Our teams', foldder_id: 1, type: 'folder', checked: false,
+          id: 3, title: 'Our teams', folder_id: 1, type: 'folder', checked: false,
           folders: [
             {
-              id: 4, title: 'Directors', foldder_id: 3, type: 'folder',
+              id: 4, title: 'Directors', folder_id: 3, type: 'folder',
               checked: false,
               menuItems: [
                 { id: 4, title: 'Management', parent_id: 4, type: 'item', checked: false },
@@ -51,7 +42,7 @@ export class App {
     {
       id: 2,
       title: 'About Us',
-      foldder_id: 2,
+      folder_id: 2,
       type: 'folder',
       checked: false,
       menuItems: [
@@ -83,5 +74,7 @@ export class App {
 
   handleSelectMenu(item: SidebarMenuItem) {
     console.log(item);
+
+
   }
 }
