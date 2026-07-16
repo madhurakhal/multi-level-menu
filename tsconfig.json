@@ -8,7 +8,7 @@
     "noImplicitReturns": true,
     "noFallthroughCasesInSwitch": true,
     "paths": {
-      "multi-level-menu": ["./dist/multi-level-menu"]
+      "@madhurakhalmagar/ngx-folder-tree": ["./dist/multi-level-menu"]
     },
     "skipLibCheck": true,
     "isolatedModules": true,
