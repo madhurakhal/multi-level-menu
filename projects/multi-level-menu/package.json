@@ -1,6 +1,7 @@
 {
-  "name": "@madhurakhalmagar/ngx-folder-tree",
+  "name": "@madhurakhal/ngx-folder-tree",
   "version": "1.0.0",
+  "description": "An angular lib for nested folder explorer",
   "peerDependencies": {
     "@angular/common": "^22.0.0",
     "@angular/core": "^22.0.0"
