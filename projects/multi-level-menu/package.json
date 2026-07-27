@@ -1,6 +1,6 @@
 {
   "name": "@madhurakhal/ngx-folder-tree",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "An angular lib for nested folder explorer",
   "keywords": ["angular multi level menu", "nested menu", "nested folder explorer menu"],
   "license": "MIT",
