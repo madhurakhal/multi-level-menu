@@ -97,6 +97,32 @@
           }
         }
       }
+    },
+    "ngx-file-manager": {
+      "projectType": "library",
+      "root": "projects/ngx-file-manager",
+      "sourceRoot": "projects/ngx-file-manager/src",
+      "prefix": "lib",
+      "architect": {
+        "build": {
+          "builder": "@angular/build:ng-packagr",
+          "configurations": {
+            "production": {
+              "tsConfig": "projects/ngx-file-manager/tsconfig.lib.prod.json"
+            },
+            "development": {
+              "tsConfig": "projects/ngx-file-manager/tsconfig.lib.json"
+            }
+          },
+          "defaultConfiguration": "production"
+        },
+        "test": {
+          "builder": "@angular/build:unit-test",
+          "options": {
+            "tsConfig": "projects/ngx-file-manager/tsconfig.spec.json"
+          }
+        }
+      }
     }
   }
 }
